@@ -1,22 +1,21 @@
 <script>
-  import { auth } from '../lib/firebase/firebase.config';
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
-
-  let user = null;
-
-  onMount(() => {
-    user = auth.currentUser;
-    if (user == null){
-      goto("/Login");
-    }
-  });
-
+  import Searchbar from "../components/Searchbar.svelte";
 
 </script>
 
-{#if user}
-  <p>Welcome, {user.email}!</p>
-{:else}
-  <p>Logging Out</p>
-{/if}
+<div class="homeContainer">
+
+<Searchbar/>
+<p>HomePage</p>
+
+</div>
+
+<style>
+  .homeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1em;
+  }
+
+</style>

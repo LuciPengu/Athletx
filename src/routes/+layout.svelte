@@ -1,19 +1,30 @@
 <script>
 	import './styles.css';
-  import Logout from '../components/Logout.svelte';
 
+  import Logout from '../components/Logout.svelte';
+  import Navbar from "../components/Navbar.svelte";
+  import Login from "../components/Login.svelte";
+  
+  import { auth } from '../lib/firebase/firebase.config';
+  import { afterUpdate } from 'svelte';
+
+  let user = null;
+
+  afterUpdate(() => {
+    user = auth.currentUser;
+  });
+  
 </script>
 
 <div class="app">
 
 	<main>
-		<slot />
+    {#if user}
+      <slot />
+      <Navbar/>
+    {:else}
+      <Login/>
+    {/if}
 	</main>
 
-	<footer>
-    <!--
-    <Logout />
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-    -->
-	</footer>
 </div>
