@@ -31,6 +31,8 @@
       let username = email.split("@")[0];
       await set(ref(db, 'accounts/'+ username), {
         username: username,
+        followers: [username],
+        following: [username],
       })
       goto("/")
       console.log('User registered successfully!');

@@ -1,17 +1,36 @@
 <script>
+  import { onMount } from 'svelte';
+  import { ref, get, child } from "firebase/database";
+  import { db, auth } from "../lib/firebase/firebase.config";
+  import Searchbar from "../components/Searchbar.svelte";
+
+  let username = auth.currentUser.email.split("@")[0];
+  let users = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+
+  onMount(async () => {
+    const usersRef = ref(db, 'accounts'); // Assuming you have an 'accounts' node with usernames
+
+    try {
+      const snapshot = await get(usersRef);
+      if (snapshot.exists()) {
+        users = Object.keys(snapshot.val());
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  });
+  
   let searchTerm = '';
   let results = [];
   
-  // Dummy data for demonstration
-  let items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
-
   function searchItems(query) {
     if (query.length > 0) {
-      results = items.filter(item => item.toLowerCase().includes(query.toLowerCase()));
+      results = users.filter(item => item.toLowerCase().includes(query.toLowerCase()));
     } else {
       results = [];
     }
   }
+  
 </script>
 
 <div class="search-container">
@@ -25,7 +44,9 @@
   {#if results.length > 0}
     <div class="dropdown">
       {#each results as item}
-        <div class="dropdown-item">{item}</div>
+        {#if item != username}
+          <a href="/User?p={item}"><div class="dropdown-item">{item}</div></a>
+        {/if}
       {/each}
     </div>
   {/if}
@@ -59,8 +80,12 @@
 
   input[type="text"] {
     width: 100%;
-    padding: 8px;
+    padding: 0.5em;
     border: 1px solid #ddd;
     box-sizing: border-box;
+    margin-bottom: 0.5em;
+
+    border-radius: 4px;
+
   }
 </style>

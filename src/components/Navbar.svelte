@@ -1,3 +1,9 @@
+<div class="navbar">
+  <a href="/Profile">Profile</a>
+  <a href="/">Home</a>
+  <a href="/">Settings</a>
+</div>
+
 <style>
   .navbar {
     display: flex;
@@ -21,9 +27,3 @@
   }
 
 </style>
-
-<div class="navbar">
-  <a href="/Profile">Profile</a>
-  <a href="/">Home</a>
-  <a href="/">Settings</a>
-</div>

@@ -1,61 +1,81 @@
 <script>
-  import { auth, db } from "../../lib/firebase/firebase.config";
-  import { ref, get, child } from "firebase/database";
+  import { db, storage, auth } from '../../lib/firebase/firebase.config.js';
+  import { ref, set } from 'firebase/database';
+  import { getStorage, ref as red, uploadBytes, getDownloadURL } from 'firebase/storage';
+  import { goto } from '$app/navigation';
 
-  const dbRef = ref(db);
+  let postText = '';
+  let uploadedImage = null;
+  let imageFile = null;
   let username = auth.currentUser.email.split("@")[0];
-  let followers = 0;
-  let following = 0;
 
-  get(child(dbRef, "accounts/"+username)).then((snapshot) => {
-    if (snapshot.exists()) {
-      followers = snapshot.val().followers;
-      following = snapshot.val().following;
-      console.log(snapshot.val());
-    } else {
-      console.log("No data available");
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+    imageFile = file;
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        uploadedImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
-  });
+  }
 
+  async function postToFirebase() {
+    
+    if (imageFile && postText.trim() !== '') {
+      const imageRef = red(storage, `images/${imageFile.name}`);
+      uploadBytes(imageRef, imageFile).then(async (snapshot) => {
+        const downloadURL = await getDownloadURL(imageRef);
+        const postRef = ref(db, `posts/${username}/${imageFile.name.split(".")[0]}`);
+        await set(postRef, {
+          text: postText,
+          imageUrl: downloadURL,
+          author: username,
+          createdAt: Date.now(),
+          likes: [username],
+          likesCount: 0,
+        }).then(() => {
+          alert('Post uploaded successfully!');
+          postText = '';
+          uploadedImage = null;
+          goto("/Profile");
+
+        }).catch((error) => {
+          console.error("Error uploading post: ", error);
+          alert('Failed to upload post.');
+        });
+      }).catch((error) => {
+        console.error("Error uploading image: ", error);
+        alert('Failed to upload image.');
+      });
+    } else {
+      alert('Please add both an image and some text to your post.');
+    }
+  }
 </script>
 
+
+<div class="postContainer">
+  <textarea bind:value={postText} placeholder="What's on your mind?"></textarea>
+  <input type="file" accept="image/*" on:change={handleFileChange}>
+  {#if uploadedImage}
+    <img class="image-preview" src={uploadedImage} alt="Preview">
+  {/if}
+  <button on:click={postToFirebase}>Post</button>
+
+</div>
+
+
 <style>
-  .profileContainer {
+  .postContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 1em;
   }
-
-  h1 {
-    font-size: 24px;
+  .image-preview {
+    margin-top: 20px;
+    max-height: 300px;
   }
-
-  .user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5em;
-  }
-
-  .user-icon {
-    width: 80px;
-    height: 80px;
-    background-color: #ddd;
-    border-radius: 50%;
-    margin-bottom: 0.5em;
-  }
-
 </style>
-
-<div class="profileContainer">
-  <h1>Hello, {username.charAt(0).toUpperCase() + username.slice(1)}!</h1>
-  <div class="user-info">
-    <div class="user-icon"></div>
-    <div>{username}</div>
-    <div>
-      Followers: {followers}
-      Following: {following}
-    </div>
-  </div>
-</div>
