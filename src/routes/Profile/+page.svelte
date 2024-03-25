@@ -54,7 +54,6 @@
     {#if userPosts.length > 0}
       <div class="postsContainer">
         <div class="posts" >
->
           {#each userPosts as post}
             <ViewPost data={{"imageUrl":post.imageUrl,
              "text":post.text,
