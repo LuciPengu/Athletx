@@ -70,6 +70,7 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
+    margin-bottom: 5em;
   }
 
 </style>

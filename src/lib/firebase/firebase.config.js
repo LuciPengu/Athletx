@@ -21,4 +21,8 @@ const db = getDatabase(app);
 const storage = getStorage(app);
 
 
+/*
+on load do ml stuff
+*/
+
 export { auth, db, storage };

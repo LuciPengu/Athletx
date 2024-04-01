@@ -218,8 +218,8 @@
   .post img {
     width: 100%; /* Adjust based on your layout */
     max-width: 600px; /* Adjust based on your layout */
-    height: 20em;
-    width: 20em;
+    height: 16em;
+    width: 16em;
     border-radius: 8px;
     object-fit: cover;
   }

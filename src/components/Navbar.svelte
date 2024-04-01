@@ -4,7 +4,16 @@
   <a href="/">Settings</a>
 </div>
 
+
+
 <style>
+  /*
+  flex box grid layout
+  left right = back and forth
+  up is like
+  down is (negative option)
+  
+  */
   .navbar {
     display: flex;
     justify-content: space-around;
