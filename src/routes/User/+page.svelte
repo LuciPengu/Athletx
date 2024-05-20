@@ -46,7 +46,6 @@
   }
 
   async function followUser(username) {
-    // Assuming 'auth', 'dbRef', and 'db' are predefined in your context.
     const myUsername = auth.currentUser.email.split("@")[0];
     if (!username || username === myUsername) {
       console.error("Invalid operation.");
@@ -54,7 +53,6 @@
     }
 
     try {
-      // Retrieve the target user's account details
       const targetUserSnapshot = await get(child(dbRef, `accounts/${username}`));
       if (!targetUserSnapshot.exists()) {
         console.log("Target user does not exist.");
@@ -63,7 +61,6 @@
 
       const targetUserData = targetUserSnapshot.val();
       if (!targetUserData.followers.includes(myUsername)) {
-        // Update the target user's followers list
         await set(ref(db, `accounts/${username}`), {
           ...targetUserData,
           followers: [...targetUserData.followers, myUsername],
@@ -71,10 +68,8 @@
         isFollowing = true;
         followers += 1;
         console.log('User followed successfully!');
-        
       }
 
-      // Retrieve the current user's account details
       const myUserSnapshot = await get(child(dbRef, `accounts/${myUsername}`));
       if (!myUserSnapshot.exists()) {
         console.log("Your user account does not exist.");
@@ -83,7 +78,6 @@
 
       const myUserData = myUserSnapshot.val();
       if (!myUserData.following.includes(username)) {
-        // Update the current user's following list
         await set(ref(db, `accounts/${myUsername}`), {
           ...myUserData,
           following: [...myUserData.following, username],
@@ -95,10 +89,9 @@
       console.error('Error during follow operation:', error.message);
     }
   }
-
 </script>
 
-<div class="profileContainer" >
+<div class="profileContainer">
   <h1>{username.charAt(0).toUpperCase() + username.slice(1)}'s Profile</h1>
   
   <div class="user-info">
@@ -107,22 +100,21 @@
       Followers: {followers}
       Following: {following}
     </div>
-    
-    <p>not ur profile</p>
     {#if !isFollowing}
       <button on:click={() => followUser(username)}>Follow</button>
     {/if}
     {#if userPosts.length > 0}
       <div class="postsContainer">
-        <div class="posts" >
+        <div class="posts">
           {#each userPosts as post}
-            <ViewPost data={{"imageUrl":post.imageUrl,
-             "text":post.text,
-             "createdAt":post.createdAt,
-             "author":post.author,
-             "likesCount":post.likesCount,
-             "likes":post.likes,
-             "comments":post.comments
+            <ViewPost data={{
+              "imageUrl":post.imageUrl,
+              "text":post.text,
+              "createdAt":post.createdAt,
+              "author":post.author,
+              "likesCount":post.likesCount,
+              "likes":post.likes,
+              "comments":post.comments
             }} />
           {/each}
         </div>
@@ -137,10 +129,16 @@
     flex-direction: column;
     align-items: center;
     margin: 1em;
+    padding: 2em;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 0.5em;
   }
 
   .user-info {
@@ -148,6 +146,34 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5em;
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 1em;
+  }
+
+  .user-info div {
+    margin: 0.5em 0;
+  }
+
+  button {
+    padding: 0.5em 1em;
+    background-color: #ff1111;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+
+  button:hover {
+    background-color: #aa5555;
+    transform: scale(1.05);
+  }
+
+  button:focus {
+    outline: none;
+    background-color: #aa5555;
   }
 
   .postsContainer {
@@ -162,7 +188,5 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
-
   }
-
 </style>

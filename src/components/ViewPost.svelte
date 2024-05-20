@@ -172,15 +172,15 @@
     border-radius: 4px; /* Optional, for styling */
     border: 1px solid #ccc; /* Optional, for styling */
     padding: 0.5em; /* Optional, for styling */
-    
+    background-color: #f9f9f9; /* Light background for comments */
+    color: #333;
+
   }
 
   hr {
     border: none;
     height: 1px;
-    /* Set the hr color */
-    color: #333;  /* old IE */
-    background-color: #333;  /* Modern Browsers */
+    background-color: #333; /* Modern Browsers */
   }
 
   /* Additional styles for the textarea and the submit button */
@@ -191,16 +191,26 @@
     border-radius: 4px;
     border: 1px solid #ccc;
     resize: vertical; /* Allows the user to resize the textarea vertically */
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    color: #333;
+
   }
 
   button {
     margin-top: 1em;
     padding: 0.5em 1em;
-    background-color: purple;
+    background-color: #ff1111; /* Purple color */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #aa5555; /* Darker purple */
   }
 
   .likeButton {
@@ -208,30 +218,45 @@
     border: none;
     padding: 0;
     margin: 0;
-  }
-
-
-  button:hover {
-    background-color: darkpurple; /* Adjust the color as needed */
+    cursor: pointer;
+    font-size: 1.2em; /* Larger size for visibility */
   }
 
   .post img {
-    width: 100%; /* Adjust based on your layout */
-    max-width: 600px; /* Adjust based on your layout */
+    width: 100%;
+    max-width: 600px;
     height: 16em;
-    width: 16em;
     border-radius: 8px;
     object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .post img:hover {
+    transform: scale(1.05); /* Slightly enlarges the image on hover */
   }
 
   .post p {
     margin-top: 0.5em;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
   }
 
   .post {
-    padding: 0.5em;
+    color: #333;
+    padding: 1em;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1em;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-  
+
+  .post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
   .modal {
     position: fixed;
     top: 0;
@@ -249,10 +274,12 @@
     position: relative;
     background: white;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
-
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
   }
 
   .close-btn {
@@ -265,15 +292,21 @@
     cursor: pointer;
   }
 
-  img {
-    max-width: 50em;
-    height: auto;
+  .modal img {
+    max-width: 100%;
+    max-height: 60vh;
     border-radius: 5px;
-    max-height: 30em;
-
+    margin-bottom: 1em;
   }
 
-  p {
+  .modal p {
+    font-size: 1em;
     margin-top: 10px;
+    font-family: Arial, sans-serif;
+  }
+
+  .modal .likeButton {
+    font-size: 1.5em;
+    margin-left: 0.5em;
   }
 </style>

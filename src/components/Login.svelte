@@ -67,10 +67,10 @@
 </script>
 
 <main>
-
+  <h1>ATHLETE X</h1>
   {#if toggle}
 
-    <h1>Login</h1>
+    <h2>Login</h2>
     <form on:submit|preventDefault={handleLogin}>
       <label>
         Email:
@@ -84,9 +84,8 @@
     </form>
 
   {:else}
-
+    <h2>Signup</h2>
     <form on:submit|preventDefault={handleSignup}>
-      <h1>Signup</h1>
       <label>
         Email:
         <input type="email" bind:value={email} />
@@ -105,3 +104,78 @@
   <a on:click={toggleLogin}>{ toggle ? "Signup" : "Login" }</a>
 
 </main>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  form {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 15px;
+    color: #fff;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #ff1111;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: #aa5555;
+  }
+
+  a {
+    margin-top: 20px;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .error {
+    margin-top: 10px;
+    color: red;
+  }
+
+      
+</style>
